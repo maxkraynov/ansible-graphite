@@ -19,7 +19,7 @@
   when: ansible_distribution_release == "wheezy" or ansible_distribution_release == "trusty"
 
 - name: Install systemd unit carbon-cache.service 
-  template: src=debian_carbon_service_systemd.j2 dest=/etc/systemd/system/carbon-cache.service
+  template: src=carbon_service_systemd.j2 dest=/etc/systemd/system/carbon-cache.service
   when: ansible_distribution_release == "jessie"
   register: ccunit
 

@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=uWSGI instance to serve myapp
+
+[Service]
+Type=simple
+ExecStartPre=-/usr/bin/bash -c 'mkdir -p /run/uwsgi/graphite; chown graphite:graphite /run/uwsgi/graphite; touch /var/log/uwsgi_graphite.log; chown graphite:graphite /var/log/uwsgi_graphite.log'
+ExecStart=/usr/bin/bash -c '/usr/bin/uwsgi --ini /etc/uwsgi_default.ini --ini /etc/uwsgi_graphite.ini --daemonize /var/log/uwsgi_graphite.log'
+User=graphite
+Group=graphite
+PIDFile=/run/uwsgi/graphite/pid
+RemainAfterExit=yes
+ExecReload=/bin/kill -HUP $MAINPID
+ExecStop=/bin/kill -INT $MAINPID
+Restart=always
+StandardError=syslog
+KillSignal=SIGQUIT
+
+[Install]
+WantedBy=multi-user.target
